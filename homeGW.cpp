@@ -90,9 +90,10 @@ ISR_PREFIX void HomeGW::handleInterrupt() {
   unsigned int duration = time - lastTime;
 
   for(int i=0; i<MAX_PLUGINS; i++) {
-    if(plugin != NULL) {
-		plugin[i]->detectPacket(duration, plugin[i]);
-	}
+	  if(plugin != NULL) {
+		  if (plugin[i] != NULL)
+			  plugin[i]->detectPacket(duration, plugin[i]);
+	  }
   }
 
   lastTime = time;
