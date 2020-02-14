@@ -20,6 +20,12 @@
 */
 #include <digoo.h>
 
+#if defined(ESP8266) || defined(ESP32)
+    #define ISR_PREFIX ICACHE_RAM_ATTR
+#else
+    #define ISR_PREFIX
+#endif
+
 digoo::digoo() {
 	packet_size = 37;
     END_PACKET = 3000;
@@ -67,7 +73,7 @@ uint8_t digoo::isValidWeather(uint64_t ppacket) {
   return OK;
 }
 
-void digoo::processPacket() {
+ISR_PREFIX void digoo::processPacket() {
 	packet = 0;
 	for(unsigned i=1; i< bitsRead; i++) {
 		unsigned duration = timings[i];

@@ -20,6 +20,12 @@
 */
 #include <plugin.h>
 
+#if defined(ESP8266) || defined(ESP32)
+    #define ISR_PREFIX ICACHE_RAM_ATTR
+#else
+    #define ISR_PREFIX
+#endif
+
 Plugin::Plugin() {
 	packet = 0;
 }
@@ -28,7 +34,7 @@ Plugin::~Plugin() {
 
 }
 
-void Plugin::detectPacket(unsigned int duration, Plugin *self ) {
+ISR_PREFIX void Plugin::detectPacket(unsigned int duration, Plugin *self ) {
 
 	if(duration > END_PACKET) {
     	if(bitsRead > packet_size-packet_size*0.1 && bitsRead < packet_size+packet_size*0.1) {  //check if we are in the range +- 10%
