@@ -74,22 +74,33 @@ uint8_t digoo::isValidWeather(uint64_t ppacket) {
 }
 
 ISR_PREFIX void digoo::processPacket() {
-	packet = 0;
-	for(unsigned i=1; i< bitsRead; i++) {
+	uint64_t pkt[2]={0};
+	uint8_t skipped=0;
+
+	for(unsigned i=0; i< bitsRead; i++) {
 		unsigned duration = timings[i];
 		if(duration > digoo::ONE) {
-	      packet = packet << 1;
-          bitSet(packet, 0);
-        } else if(duration > digoo::ZERO) {
-          packet = packet << 1;
-          bitClear(packet, 0);
-        }
-
+			pkt[1] = (pkt[1] << 1) | (pkt[0] >> 31);
+			pkt[0] = (pkt[0] << 1);
+			bitSet(pkt[0], 0);
+			//Serial.print("1");
+		} else if(duration > digoo::ZERO) {
+			pkt[1] = (pkt[1] << 1) | (pkt[0] >> 31);
+			pkt[0] = (pkt[0] << 1);
+			bitClear(pkt[0], 0);
+			//Serial.print("0");
+		} else skipped++;
+		Serial.print("0x");
+		Serial.print((unsigned long) pkt[1], HEX);
+		Serial.println((unsigned long) pkt[0], HEX);
 	}
+	packet = (pkt[1]<<32) | pkt[0];
+	Serial.printf("\nR%dS%d\n",bitsRead, skipped);
 	#ifdef DEBUG
-    Serial.print("~0x");
-    Serial.println((unsigned long) packet, HEX);
-	if (packet == 0) {
+	if (skipped == 0) {
+		Serial.print("~0x");
+		Serial.print((unsigned) pkt[1], HEX);
+		Serial.println((unsigned) pkt[0], HEX);
 		for(unsigned i=0; i < bitsRead; i++)
 			Serial.println(timings[i]);
 	}
