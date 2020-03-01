@@ -90,12 +90,12 @@ ISR_PREFIX void digoo::processPacket() {
 			bitClear(pkt[0], 0);
 			//Serial.print("0");
 		} else skipped++;
-		Serial.print("0x");
-		Serial.print((unsigned long) pkt[1], HEX);
-		Serial.println((unsigned long) pkt[0], HEX);
+		//Serial.print("0x");
+		//Serial.print((unsigned long) pkt[1], HEX);
+		//Serial.println((unsigned long) pkt[0], HEX);
 	}
 	packet = (pkt[1]<<32) | pkt[0];
-	Serial.printf("\nR%dS%d\n",bitsRead, skipped);
+	//Serial.printf("\nR%dS%d\n",bitsRead, skipped);
 	#ifdef DEBUG
 	if (skipped == 0) {
 		Serial.print("~0x");
