@@ -36,25 +36,30 @@ Plugin::~Plugin() {
 
 ISR_PREFIX void Plugin::detectPacket(unsigned int duration, Plugin *self ) {
 
-	if(duration > END_PACKET) {
-    	if(bitsRead > packet_size-packet_size*0.1 && bitsRead < packet_size+packet_size*0.1) {  //check if we are in the range +- 10%
+	if((duration > END_PACKET) && (1==digitalRead(5))){
+		//check if we are in the range +- 10%
+		if(bitsRead > packet_size*0.9
+		   && bitsRead < packet_size*1.2) {
 			#ifdef DEBUG
 			Serial.println(bitsRead);
 			#endif
+			//Serial.printf("\nB%d", digitalRead(5));
 			self->processPacket();
-        }
-		bitsRead = 0;	
-    }
+		} else {
+			//Serial.printf("\nB%d", bitsRead);
+		}
+		bitsRead = 0;
+	} else {
 
-	if(duration > MIN_PACKET) {
-       timings[bitsRead] = duration;
-       bitsRead++;
+		if((duration > MIN_PACKET) && (1==digitalRead(5))) {
+			timings[bitsRead] = duration;
+			bitsRead++;//Serial.printf("\n%d#", digitalRead(5));
+		} else { /*Serial.printf("\n%d@", duration);*/}
+
+		if(bitsRead == MAX_CHANGES) {
+			bitsRead = 0;
+		}
 	}
-
-	if(bitsRead == MAX_CHANGES) {
-    	bitsRead = 0;
-	}
-
 }
 
 String Plugin::getString(uint64_t packet) {
