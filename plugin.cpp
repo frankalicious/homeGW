@@ -26,7 +26,7 @@
     #define ISR_PREFIX
 #endif
 
-Plugin::Plugin() {
+Plugin::Plugin(const unsigned int _packet_size) :  packet_size(_packet_size){
 	packet = 0;
 }
 

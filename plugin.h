@@ -35,14 +35,14 @@ class Plugin {
 	public:
 		unsigned int timings[MAX_CHANGES];
 		unsigned int bitsRead;
-		unsigned int packet_size;
 		
         unsigned int END_PACKET; 
+		const unsigned int packet_size;
 		unsigned int MIN_PACKET;
 
 		uint64_t packet;
 
-		Plugin();
+		Plugin(const unsigned int _packet_size);
 		virtual ~Plugin();
 
 		void detectPacket(unsigned int, Plugin *);

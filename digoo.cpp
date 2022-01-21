@@ -26,8 +26,7 @@
     #define ISR_PREFIX
 #endif
 
-digoo::digoo() {
-	packet_size = 37;
+digoo::digoo() : Plugin(37){
     END_PACKET = 3000;
 	MIN_PACKET = 650;
 }

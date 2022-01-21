@@ -20,8 +20,7 @@
 */
 #include <generic.h>
 
-generic::generic() {
-	packet_size = 48;
+generic::generic() : Plugin(48) {
     END_PACKET = 5000;
 	MIN_PACKET = 280; 
 }

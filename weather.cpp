@@ -20,8 +20,7 @@
 */
 #include <weather.h>
 
-weather::weather() {
-	packet_size = 74;
+weather::weather()  : Plugin(74){
 	END_PACKET = 5000;
 	MIN_PACKET = 250;
 }
