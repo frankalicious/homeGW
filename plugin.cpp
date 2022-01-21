@@ -37,9 +37,9 @@ Plugin::~Plugin() {
 ISR_PREFIX void Plugin::detectPacket(unsigned int duration, Plugin *self ) {
 
 	if((duration > END_PACKET) && (1==digitalRead(5))){
-		//check if we are in the range +- 10%
-		if(bitsRead > packet_size*0.9
-		   && bitsRead < packet_size*1.2) {
+		//check if we are in the range
+		if(bitsRead > packet_size_min
+		   && bitsRead < packet_size_max) {
 			#ifdef DEBUG
 			Serial.println(bitsRead);
 			#endif

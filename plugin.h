@@ -35,9 +35,11 @@ class Plugin {
 	public:
 		unsigned int timings[MAX_CHANGES];
 		unsigned int bitsRead;
-		
-        unsigned int END_PACKET; 
 		const unsigned int packet_size;
+		const unsigned int packet_size_min=packet_size*0.9;
+		const unsigned int packet_size_max=packet_size*1.2;
+
+		unsigned int END_PACKET;
 		unsigned int MIN_PACKET;
 
 		uint64_t packet;
