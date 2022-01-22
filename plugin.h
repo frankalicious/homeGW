@@ -47,7 +47,7 @@ class Plugin {
 		Plugin(const unsigned int _packet_size);
 		virtual ~Plugin();
 
-		void detectPacket(unsigned int, Plugin *);
+		void detectPacket(unsigned int, unsigned char, Plugin *);
 
 		virtual void processPacket() = 0;
 

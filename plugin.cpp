@@ -34,9 +34,9 @@ Plugin::~Plugin() {
 
 }
 
-ISR_PREFIX void Plugin::detectPacket(unsigned int duration, Plugin *self ) {
+void Plugin::detectPacket(unsigned int duration, unsigned char pinState, Plugin *self ) {
 
-	if((duration > END_PACKET) && (1==digitalRead(5))){
+	if((duration > END_PACKET) && (1==pinState)){
 		//check if we are in the range
 		if(bitsRead > packet_size_min
 		   && bitsRead < packet_size_max) {
@@ -51,7 +51,7 @@ ISR_PREFIX void Plugin::detectPacket(unsigned int duration, Plugin *self ) {
 		bitsRead = 0;
 	} else {
 
-		if((duration > MIN_PACKET) && (1==digitalRead(5))) {
+		if((duration > MIN_PACKET) && (1==pinState)) {
 			timings[bitsRead] = duration;
 			bitsRead++;//Serial.printf("\n%d#", digitalRead(5));
 		} else { /*Serial.printf("\n%d@", duration);*/}
