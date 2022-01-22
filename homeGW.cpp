@@ -19,12 +19,31 @@
 
 */
 #include <homeGW.h>
+#include <RingBufCPP.h>
 
 #if defined(ESP8266) || defined(ESP32)
     #define ISR_PREFIX ICACHE_RAM_ATTR
 #else
     #define ISR_PREFIX
 #endif
+
+// MUST BE AN INTTERUPT COMPATIBLE PIN
+#define EVENT_PIN 5
+#define MAX_NUM_ELEMENTS 10
+
+struct Event
+{
+  int index;
+  unsigned char pinState;
+  unsigned long timestamp;
+};
+
+// Declare as volatile, since modofied in ISR
+volatile unsigned int _index = 0;
+
+// Stack allocate the buffer to hold event structs
+RingBufCPP<struct Event, MAX_NUM_ELEMENTS> buf;
+
 
 Plugin **HomeGW::plugin;
 uint8_t HomeGW::MAX_PLUGINS;
@@ -84,17 +103,28 @@ bool HomeGW::setup(uint8_t pin) {
 }
 
 ISR_PREFIX void HomeGW::handleInterrupt() {
+  struct Event e;
+  e.index = _index++;
+  e.pinState = digitalRead(EVENT_PIN);
+  e.timestamp = micros();
+  // Add it to the buffer
+  buf.add(e);
+}
+
+void HomeGW::handleDeferredInterrupt() {
   static unsigned long lastTime;
+  struct Event e;
 
-  long time = micros();
-  unsigned int duration = time - lastTime;
+  // Keep looping until pull() returns NULL
+  while (buf.pull(&e)) {
+	  unsigned int duration = e.timestamp - lastTime;
 
-  for(int i=0; i<MAX_PLUGINS; i++) {
-	  if(plugin != NULL) {
-		  if (plugin[i] != NULL)
-			  plugin[i]->detectPacket(duration, plugin[i]);
+	  for(int i=0; i<MAX_PLUGINS; i++) {
+		  if(plugin != NULL) {
+			  if (plugin[i] != NULL)
+				  plugin[i]->detectPacket(duration, e.pinState, plugin[i]);
+		  }
 	  }
+	  lastTime = e.timestamp;
   }
-
-  lastTime = time;
 }

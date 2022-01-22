@@ -47,6 +47,7 @@ class HomeGW {
 		bool setup(uint8_t pin);
 
 		void registerPlugin(Plugin *);
+		void handleDeferredInterrupt();
 };
 
 #endif
