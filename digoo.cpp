@@ -20,12 +20,6 @@
 */
 #include <digoo.h>
 
-#if defined(ESP8266) || defined(ESP32)
-    #define ISR_PREFIX ICACHE_RAM_ATTR
-#else
-    #define ISR_PREFIX
-#endif
-
 digoo::digoo() : Plugin(37){
     END_PACKET = 3000;
 	MIN_PACKET = 650;

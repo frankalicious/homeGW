@@ -20,12 +20,6 @@
 */
 #include <plugin.h>
 
-#if defined(ESP8266) || defined(ESP32)
-    #define ISR_PREFIX ICACHE_RAM_ATTR
-#else
-    #define ISR_PREFIX
-#endif
-
 Plugin::Plugin(const unsigned int _packet_size) :  packet_size(_packet_size){
 	packet = 0;
 }
