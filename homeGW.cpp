@@ -102,7 +102,7 @@ bool HomeGW::setup(uint8_t pin) {
   return true;
 }
 
-ISR_PREFIX void HomeGW::handleInterrupt() {
+void ISR_PREFIX HomeGW::handleInterrupt() {
   struct Event e;
   e.index = _index++;
   e.pinState = digitalRead(EVENT_PIN);
