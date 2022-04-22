@@ -89,8 +89,7 @@ void digoo::processPacket() {
 	#ifdef DEBUG
 	if (skipped == 0) {
 		Serial.print("~0x");
-		Serial.print((unsigned) pkt[1], HEX);
-		Serial.println((unsigned) pkt[0], HEX);
+		Serial.println((unsigned long long) packet, HEX);
 		for(unsigned i=0; i < bitsRead; i++)
 			Serial.println(timings[i]);
 	}
