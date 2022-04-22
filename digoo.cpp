@@ -69,29 +69,29 @@ uint8_t digoo::isValidWeather(uint64_t ppacket) {
 
 void digoo::processPacket() {
 	uint64_t pktNG=0;
-	uint8_t skipped=0;
 
 	for(unsigned i=0; i< bitsRead; i++) {
 		unsigned duration = timings[i];
 		if(duration > digoo::ONE) {
-			bitSet64(pktNG, 63 - (i-skipped));
+			bitSet64(pktNG, 63 - i);
 			//Serial.print("1");
 		} else if(duration > digoo::ZERO) {
 			//Serial.print("0");
-		} else skipped++;
-		//Serial.print("0x");
+		} else {
+			//Serial.print("skip invalid packet");
+			return;
+		}
 	}
-	pktNG >>= 64 - (bitsRead - skipped);
+	pktNG >>= (64 - bitsRead);
 	packet =  pktNG;
 	//Serial.print("0x");
-	//Serial.println((unsigned long long) pktNG, HEX);
-	//Serial.printf("\nR%dS%d\n",bitsRead, skipped);
-	#ifdef DEBUG
-	if (skipped == 0) {
-		Serial.print("~0x");
-		Serial.println((unsigned long long) packet, HEX);
-		for(unsigned i=0; i < bitsRead; i++)
+	//Serial.println((unsigned long long) packet, HEX);
+	//Serial.printf("R%d\n",bitsRead);
+
+#ifdef DEBUG
+	Serial.print("~0x");
+	Serial.println((unsigned long long) packet, HEX);
+	for(unsigned i=0; i < bitsRead; i++)
 			Serial.println(timings[i]);
-	}
-	#endif
+#endif
 }
