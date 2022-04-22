@@ -58,7 +58,7 @@ void Plugin::detectPacket(unsigned int duration, unsigned char pinState, Plugin 
 
 String Plugin::getString(uint64_t packet) {
 	String s = "0x";
-	return s + String((long) packet, HEX);
+	return s + String((unsigned long long) packet, HEX);
 }
 
 uint64_t Plugin::getPacket() {
