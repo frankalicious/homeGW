@@ -38,7 +38,7 @@ struct Event
   unsigned long timestamp;
 };
 
-// Declare as volatile, since modofied in ISR
+// Declare as volatile, since modified in ISR
 volatile unsigned int _index = 0;
 
 // Stack allocate the buffer to hold event structs
