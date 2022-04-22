@@ -22,9 +22,9 @@
 #define digoo_h
 
 #if ARDUINO < 100
-  #include <WProgram.h>
+#include <WProgram.h>
 #else
-  #include <Arduino.h>
+#include <Arduino.h>
 #endif
 
 #include <plugin.h>
@@ -35,23 +35,23 @@
 
 class digoo : public Plugin {
 
-	private:
-		const static unsigned int ONE = 1800; 
-		const static unsigned int ZERO = 800;
-		
-	public:
-		digoo();
+  private:
+    const static unsigned int ONE = 1800;
+    const static unsigned int ZERO = 800;
 
-		static void detectPacket(unsigned int, Plugin *);
-		void processPacket();
+  public:
+    digoo();
 
-		uint8_t isValidWeather(uint64_t packet);
+    static void detectPacket(unsigned int, Plugin *);
+    void processPacket();
 
-		uint8_t getId(uint64_t packet);
-        uint8_t getBattery(uint64_t packet);
-		uint8_t getChannel(uint64_t packet);
-		float getTemperature(uint64_t packet);
-		uint8_t getHumidity(uint64_t packet);
+    uint8_t isValidWeather(uint64_t packet);
+
+    uint8_t getId(uint64_t packet);
+    uint8_t getBattery(uint64_t packet);
+    uint8_t getChannel(uint64_t packet);
+    float getTemperature(uint64_t packet);
+    uint8_t getHumidity(uint64_t packet);
 
 };
 

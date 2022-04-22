@@ -20,8 +20,8 @@
 */
 #include <plugin.h>
 
-Plugin::Plugin(const unsigned int _packet_size) :  packet_size(_packet_size){
-	packet = 0;
+Plugin::Plugin(const unsigned int _packet_size) :  packet_size(_packet_size) {
+  packet = 0;
 }
 
 Plugin::~Plugin() {
@@ -30,35 +30,37 @@ Plugin::~Plugin() {
 
 void Plugin::detectPacket(unsigned int duration, unsigned char pinState, Plugin *self ) {
 
-	if((duration > END_PACKET) && (1==pinState)){
-		//check if we are in the range
-		if(bitsRead > packet_size_min
-		   && bitsRead < packet_size_max) {
-			#ifdef DEBUG
-			Serial.println(bitsRead);
-			#endif
-			//Serial.printf("\nB%d", digitalRead(5));
-			self->processPacket();
-		} else {
-			//Serial.printf("\nB%d", bitsRead);
-		}
-		bitsRead = 0;
-	} else {
+  if ((duration > END_PACKET) && (1 == pinState)) {
+    //check if we are in the range
+    if (bitsRead > packet_size_min
+        && bitsRead < packet_size_max) {
+#ifdef DEBUG
+      Serial.println(bitsRead);
+#endif
+      //Serial.printf("\nB%d", digitalRead(5));
+      self->processPacket();
+    } else {
+      //Serial.printf("\nB%d", bitsRead);
+    }
+    bitsRead = 0;
+  } else {
 
-		if((duration > MIN_PACKET) && (1==pinState)) {
-			timings[bitsRead] = duration;
-			bitsRead++;//Serial.printf("\n%d#", digitalRead(5));
-		} else { /*Serial.printf("\n%d@", duration);*/}
+    if ((duration > MIN_PACKET) && (1 == pinState)) {
+      timings[bitsRead] = duration;
+      bitsRead++;//Serial.printf("\n%d#", digitalRead(5));
+    } else {
+      /*Serial.printf("\n%d@", duration);*/
+    }
 
-		if(bitsRead == MAX_CHANGES) {
-			bitsRead = 0;
-		}
-	}
+    if (bitsRead == MAX_CHANGES) {
+      bitsRead = 0;
+    }
+  }
 }
 
 String Plugin::getString(uint64_t packet) {
-	String s = "0x";
-	return s + String((unsigned long long) packet, HEX);
+  String s = "0x";
+  return s + String((unsigned long long) packet, HEX);
 }
 
 uint64_t Plugin::getPacket() {
@@ -68,10 +70,8 @@ uint64_t Plugin::getPacket() {
 }
 
 bool Plugin::available() {
-  if(Plugin::packet != 0) {
-      return true;
+  if (Plugin::packet != 0) {
+    return true;
   }
   return false;
 }
-
-

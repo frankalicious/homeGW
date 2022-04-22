@@ -22,9 +22,9 @@
 #define HomeGW_h
 
 #if ARDUINO < 100
-  #include <WProgram.h>
+#include <WProgram.h>
 #else
-  #include <Arduino.h>
+#include <Arduino.h>
 #endif
 
 #include <plugin.h>
@@ -32,22 +32,22 @@
 
 class HomeGW {
 
-	private:
-		uint8_t pin;
+  private:
+    uint8_t pin;
 
-		static uint8_t MAX_PLUGINS; 
+    static uint8_t MAX_PLUGINS;
 
-		static void handleInterrupt();
+    static void handleInterrupt();
 
-	public:
-		static Plugin **plugin;
-		HomeGW(uint8_t max_plugins);
-		~HomeGW();
-	
-		bool setup(uint8_t pin);
+  public:
+    static Plugin **plugin;
+    HomeGW(uint8_t max_plugins);
+    ~HomeGW();
 
-		void registerPlugin(Plugin *);
-		void handleDeferredInterrupt();
+    bool setup(uint8_t pin);
+
+    void registerPlugin(Plugin *);
+    void handleDeferredInterrupt();
 };
 
 #endif

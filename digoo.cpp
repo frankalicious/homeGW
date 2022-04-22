@@ -20,9 +20,9 @@
 */
 #include <digoo.h>
 
-digoo::digoo() : Plugin(37){
-    END_PACKET = 3000;
-	MIN_PACKET = 650;
+digoo::digoo() : Plugin(37) {
+  END_PACKET = 3000;
+  MIN_PACKET = 650;
 }
 
 
@@ -38,13 +38,13 @@ uint8_t digoo::getBattery(uint64_t packet) {
 
 uint8_t digoo::getChannel(uint64_t packet) {
   uint8_t channel = (packet >> 24) & 0x3;
-  return channel+1;
+  return channel + 1;
 }
 
 float digoo::getTemperature(uint64_t packet) {
-	int16_t t = packet >> 12 & 0x0FFF;
-	t = 0x0800 & t ? 0xF000 | t  : t;
-	float temperature = float(t) / 10;
+  int16_t t = packet >> 12 & 0x0FFF;
+  t = 0x0800 & t ? 0xF000 | t  : t;
+  float temperature = float(t) / 10;
   return temperature;
 }
 
@@ -68,30 +68,30 @@ uint8_t digoo::isValidWeather(uint64_t ppacket) {
 #define bitSet64(value, bit) ((value) |= (1ULL << (bit)))
 
 void digoo::processPacket() {
-	uint64_t pktNG=0;
+  uint64_t pktNG = 0;
 
-	for(unsigned i=0; i< bitsRead; i++) {
-		unsigned duration = timings[i];
-		if(duration > digoo::ONE) {
-			bitSet64(pktNG, 63 - i);
-			//Serial.print("1");
-		} else if(duration > digoo::ZERO) {
-			//Serial.print("0");
-		} else {
-			//Serial.print("skip invalid packet");
-			return;
-		}
-	}
-	pktNG >>= (64 - bitsRead);
-	packet =  pktNG;
-	//Serial.print("0x");
-	//Serial.println((unsigned long long) packet, HEX);
-	//Serial.printf("R%d\n",bitsRead);
+  for (unsigned i = 0; i < bitsRead; i++) {
+    unsigned duration = timings[i];
+    if (duration > digoo::ONE) {
+      bitSet64(pktNG, 63 - i);
+      //Serial.print("1");
+    } else if (duration > digoo::ZERO) {
+      //Serial.print("0");
+    } else {
+      //Serial.print("skip invalid packet");
+      return;
+    }
+  }
+  pktNG >>= (64 - bitsRead);
+  packet =  pktNG;
+  //Serial.print("0x");
+  //Serial.println((unsigned long long) packet, HEX);
+  //Serial.printf("R%d\n",bitsRead);
 
 #ifdef DEBUG
-	Serial.print("~0x");
-	Serial.println((unsigned long long) packet, HEX);
-	for(unsigned i=0; i < bitsRead; i++)
-			Serial.println(timings[i]);
+  Serial.print("~0x");
+  Serial.println((unsigned long long) packet, HEX);
+  for (unsigned i = 0; i < bitsRead; i++)
+    Serial.println(timings[i]);
 #endif
 }

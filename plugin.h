@@ -22,39 +22,39 @@
 #define plugin_h
 
 #if ARDUINO < 100
-  #include <WProgram.h>
+#include <WProgram.h>
 #else
-  #include <Arduino.h>
+#include <Arduino.h>
 #endif
-		
+
 #define MAX_CHANGES 128
 #define OK	0
 
 class Plugin {
 
-	public:
-		unsigned int timings[MAX_CHANGES];
-		unsigned int bitsRead;
-		const unsigned int packet_size;
-		const unsigned int packet_size_min=packet_size*0.9;
-		const unsigned int packet_size_max=packet_size*1.2;
+  public:
+    unsigned int timings[MAX_CHANGES];
+    unsigned int bitsRead;
+    const unsigned int packet_size;
+    const unsigned int packet_size_min = packet_size * 0.9;
+    const unsigned int packet_size_max = packet_size * 1.2;
 
-		unsigned int END_PACKET;
-		unsigned int MIN_PACKET;
+    unsigned int END_PACKET;
+    unsigned int MIN_PACKET;
 
-		uint64_t packet;
+    uint64_t packet;
 
-		Plugin(const unsigned int _packet_size);
-		virtual ~Plugin();
+    Plugin(const unsigned int _packet_size);
+    virtual ~Plugin();
 
-		void detectPacket(unsigned int, unsigned char, Plugin *);
+    void detectPacket(unsigned int, unsigned char, Plugin *);
 
-		virtual void processPacket() = 0;
+    virtual void processPacket() = 0;
 
-		uint64_t getPacket();
-		String getString(uint64_t packet);
+    uint64_t getPacket();
+    String getString(uint64_t packet);
 
-		bool available();
+    bool available();
 
 };
 

@@ -22,9 +22,9 @@
 #define weather_h
 
 #if ARDUINO < 100
-  #include <WProgram.h>
+#include <WProgram.h>
 #else
-  #include <Arduino.h>
+#include <Arduino.h>
 #endif
 
 #include "plugin.h"
@@ -35,22 +35,22 @@
 
 class weather : public Plugin {
 
-	private:
-		const static unsigned int ONE = 3000;
-		const static unsigned int ZERO = 1000; 
+  private:
+    const static unsigned int ONE = 3000;
+    const static unsigned int ZERO = 1000;
 
-	public:
-		weather();
+  public:
+    weather();
 
-		static void detectPacket(unsigned int, Plugin *);
-		void processPacket();
-	
-		uint8_t isValidWeather(uint64_t packet);
-		uint8_t getId(uint64_t packet);
-		uint8_t getChannel(uint64_t packet);
-		uint8_t getBattery(uint64_t packet);
-		float getTemperature(uint64_t packet);
-		uint8_t getHumidity(uint64_t packet);
+    static void detectPacket(unsigned int, Plugin *);
+    void processPacket();
+
+    uint8_t isValidWeather(uint64_t packet);
+    uint8_t getId(uint64_t packet);
+    uint8_t getChannel(uint64_t packet);
+    uint8_t getBattery(uint64_t packet);
+    float getTemperature(uint64_t packet);
+    uint8_t getHumidity(uint64_t packet);
 
 };
 

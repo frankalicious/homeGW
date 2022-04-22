@@ -22,9 +22,9 @@
 #include <RingBufCPP.h>
 
 #if defined(ESP8266) || defined(ESP32)
-    #define ISR_PREFIX IRAM_ATTR
+#define ISR_PREFIX IRAM_ATTR
 #else
-    #define ISR_PREFIX
+#define ISR_PREFIX
 #endif
 
 // MUST BE AN INTTERUPT COMPATIBLE PIN
@@ -49,24 +49,24 @@ Plugin **HomeGW::plugin;
 uint8_t HomeGW::MAX_PLUGINS;
 
 HomeGW::HomeGW(uint8_t max_plugins) {
-	MAX_PLUGINS = max_plugins;
-	plugin = new Plugin*[MAX_PLUGINS];
-	for(int i=0; i<MAX_PLUGINS; i++)
-		plugin[i] = NULL; 
+  MAX_PLUGINS = max_plugins;
+  plugin = new Plugin*[MAX_PLUGINS];
+  for (int i = 0; i < MAX_PLUGINS; i++)
+    plugin[i] = NULL;
 }
 
 HomeGW::~HomeGW() {
-	delete HomeGW::plugin;
+  delete HomeGW::plugin;
 }
 
 
 void HomeGW::registerPlugin(Plugin *p) {
-	for(int i=0; i<MAX_PLUGINS; i++) {
-		if(plugin[i] == NULL) {
-			plugin[i] = p;
-			return;
-		}
-	}
+  for (int i = 0; i < MAX_PLUGINS; i++) {
+    if (plugin[i] == NULL) {
+      plugin[i] = p;
+      return;
+    }
+  }
 
 }
 
@@ -117,14 +117,14 @@ void HomeGW::handleDeferredInterrupt() {
 
   // Keep looping until pull() returns NULL
   while (buf.pull(&e)) {
-	  unsigned int duration = e.timestamp - lastTime;
+    unsigned int duration = e.timestamp - lastTime;
 
-	  for(int i=0; i<MAX_PLUGINS; i++) {
-		  if(plugin != NULL) {
-			  if (plugin[i] != NULL)
-				  plugin[i]->detectPacket(duration, e.pinState, plugin[i]);
-		  }
-	  }
-	  lastTime = e.timestamp;
+    for (int i = 0; i < MAX_PLUGINS; i++) {
+      if (plugin != NULL) {
+        if (plugin[i] != NULL)
+          plugin[i]->detectPacket(duration, e.pinState, plugin[i]);
+      }
+    }
+    lastTime = e.timestamp;
   }
 }

@@ -22,23 +22,23 @@
 #define generic_h
 
 #if ARDUINO < 100
-  #include <WProgram.h>
+#include <WProgram.h>
 #else
-  #include <Arduino.h>
+#include <Arduino.h>
 #endif
 
 #include <plugin.h>
 
 class generic : public Plugin {
 
-	private:
-		const static unsigned int AVERAGE = 800; 
-		
-	public:
-		generic();
+  private:
+    const static unsigned int AVERAGE = 800;
 
-		static void detectPacket(unsigned int, Plugin *);
-		void processPacket();
+  public:
+    generic();
+
+    static void detectPacket(unsigned int, Plugin *);
+    void processPacket();
 
 };
 
